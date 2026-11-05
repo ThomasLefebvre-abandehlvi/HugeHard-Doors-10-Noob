@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hugehard Doors 0.11</title>
+
+    <link rel="icon" type="image/png" href="hugeharddoors.png">
+    <link rel="stylesheet" href="fashion.css">
+
+    <script src="hugeharddoors.js" defer></script>
+</head>
+
+<body>
+
+    <!-- BOOT SCREEN -->
+    <div id="boot-screen">
+        <div class="boot-content">
+            <img src="hugeharddoors.png" alt="Hugehard Doors Logo">
+            <h1>HUGEHARD DOORS 0.11</h1>
+            <p>Micro. Soft. Windows.</p>
+
+            <div id="boot-messages">
+                Initializing door mechanisms...
+            </div>
+
+            <div class="boot-progress">
+                <div id="boot-progress-bar"></div>
+            </div>
+
+            <p class="boot-footer">
+                Copyright © 1983 Hugehard Corporation
+            </p>
+        </div>
+    </div>
+
+
+    <!-- MAIN DESKTOP -->
+    <main id="desktop">
+
+        <!-- DESKTOP BACKGROUND -->
+        <div id="desktop-background"></div>
+
+        <!-- DESKTOP ICONS -->
+        <section id="desktop-icons">
+
+            <div class="desktop-icon"
+                 data-app="my-computer"
+                 title="Double-click to open">
+                <div class="door-icon">🚪</div>
+                <span>My Doors</span>
+            </div>
+
+            <div class="desktop-icon"
+                 data-app="recycle-bin"
+                 title="Double-click to open">
+                <div class="door-icon">🗑️</div>
+                <span>Recycle Door</span>
+            </div>
+            <div class="desktop-icon" data-app="boogle">
+                <div class="desktop-icon-image">🌐</div>
+                <span>Boogle</span>
+            </div>
+            
+            <div class="desktop-icon" data-app="file-manager">
+                <div class="desktop-icon-image">📁</div>
+                <span>File Manager</span>
+            </div>
+
+            <div class="desktop-icon"
+                 data-app="paint"
+                 title="Double-click to open">
+                <div class="door-icon">🎨</div>
+                <span>Paintn't</span>
+            </div>
+
+            <div class="desktop-icon"
+                 data-app="terminal"
+                 title="Double-click to open">
+                <div class="door-icon">💻</div>
+                <span>Door Prompt</span>
+            </div>
+
+            <div class="desktop-icon"
+                 data-app="settings"
+                 title="Double-click to open">
+                <div class="door-icon">⚙️</div>
+                <span>Door Settings</span>
+            </div>
+
+            <div class="desktop-icon"
+                 data-app="error"
+                 title="Double-click to open">
+                <div class="door-icon">⚠️</div>
+                <span>ERROR.COM</span>
+            </div>
+
+            <div class="desktop-icon"
+                 data-app="mystery"
+                 title="Double-click to open">
+                <div class="door-icon">❓</div>
+                <span>DO NOT OPEN</span>
+            </div>
+
+        </section>
+
+
+        <!-- OPEN APPLICATION WINDOWS -->
+        <section id="window-layer">
+            <!-- Applications will be created here by JavaScript. -->
+        </section>
+
+
+        <!-- ERROR POPUP LAYER -->
+        <section id="error-layer">
+            <!-- Random system errors will appear here. -->
+        </section>
+
+
+        <!-- TASKBAR -->
+        <footer id="taskbar">
+
+            <button id="start-button">
+                <img src="hugeharddoors.png" alt="">
+                START
+            </button>
+
+            <div id="taskbar-windows">
+                <!-- Open application buttons appear here. -->
+            </div>
+
+            <div id="system-tray">
+                <span id="system-status">SYSTEM: QUESTIONABLE</span>
+                <span id="clock">00:00</span>
+            </div>
+
+        </footer>
+
+    </main>
+
+
+    <!-- START MENU -->
+    <div id="start-menu" hidden>
+
+        <div class="start-menu-header">
+            HUGEHARD DOORS 0.11
+        </div>
+
+        <button data-app="my-computer">My Doors</button>
+        <button data-app="boogle">Boogle</button>
+        <button data-app="paint">Paintn't</button>
+        <button data-app="terminal">Door Prompt</button>
+        <button data-app="settings">Settings</button>
+        <button id="shutdown-button">Shut Down</button>
+
+    </div>
+
+
+    <!-- SYSTEM NOTIFICATIONS -->
+    <div id="notification-layer">
+        <!-- Notifications appear here. -->
+    </div>
+
+</body>
+</html>
