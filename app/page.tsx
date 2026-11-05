@@ -4736,7 +4736,7 @@ export default function Page() {
           </button>
 
           <div id="taskbar-search-wrap">
-            <span aria-hidden="true">⌕</span>
+            <img className="taskbar-search-logo" src="/hugeharddoors.png" alt="" aria-hidden="true" />
             <input id="taskbar-search" type="search" placeholder="Search apps and doors" aria-label="Search apps and doors" />
           </div>
 
