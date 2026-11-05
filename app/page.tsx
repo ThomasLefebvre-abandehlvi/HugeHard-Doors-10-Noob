@@ -4045,7 +4045,7 @@ export default function Page() {
       showNotification("Notepad 🗑️", `Deleted ${filename}.`);
     }
 
-    // Context Menu System
+    // Shared Windows 10-style context menu system
     function showUniversalContextMenu(event: MouseEvent, items: Array<{ label?: string; action?: string | (() => void); disabled?: boolean; separator?: boolean }>) {
       event.preventDefault();
       event.stopPropagation();
@@ -4054,17 +4054,26 @@ export default function Page() {
 
       const menu = document.createElement("div");
       menu.className = "universal-context-menu";
+      menu.setAttribute("role", "menu");
+      menu.setAttribute("aria-label", "Context menu");
 
       items.forEach(item => {
         if (item.separator) {
           const sep = document.createElement("div");
           sep.className = "context-separator";
+          sep.setAttribute("role", "separator");
           menu.appendChild(sep);
         } else {
           const btn = document.createElement("button");
+          btn.type = "button";
           btn.textContent = item.label || "";
-          if (item.disabled) btn.disabled = true;
+          btn.setAttribute("role", "menuitem");
+          if (item.disabled) {
+            btn.disabled = true;
+            btn.setAttribute("aria-disabled", "true");
+          }
           btn.addEventListener("click", () => {
+            cleanup();
             menu.remove();
             if (typeof item.action === "function") {
               item.action();
@@ -4081,19 +4090,37 @@ export default function Page() {
         }
       });
 
-      menu.style.left = `${Math.min(event.clientX, window.innerWidth - 215)}px`;
-      menu.style.top = `${Math.min(event.clientY, window.innerHeight - 300)}px`;
+      const cleanup = () => {
+        document.removeEventListener("pointerdown", closeMenu);
+        document.removeEventListener("keydown", onMenuKeyDown);
+      };
 
-      document.body.appendChild(menu);
-
-      const closeMenu = (e: MouseEvent) => {
+      const closeMenu = (e: PointerEvent) => {
         if (!menu.contains(e.target as Node)) {
+          cleanup();
           menu.remove();
-          document.removeEventListener("pointerdown", closeMenu);
         }
       };
 
-      setTimeout(() => document.addEventListener("pointerdown", closeMenu), 0);
+      const onMenuKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          cleanup();
+          menu.remove();
+        }
+      };
+
+      document.body.appendChild(menu);
+      const bounds = menu.getBoundingClientRect();
+      const left = Math.max(8, Math.min(event.clientX, window.innerWidth - bounds.width - 8));
+      const top = Math.max(8, Math.min(event.clientY, window.innerHeight - bounds.height - 8));
+      menu.style.left = `${left}px`;
+      menu.style.top = `${top}px`;
+
+      setTimeout(() => {
+        document.addEventListener("pointerdown", closeMenu);
+        document.addEventListener("keydown", onMenuKeyDown);
+      }, 0);
     }
 
     function showFolderContextMenu(event: MouseEvent, folderName: string) {
