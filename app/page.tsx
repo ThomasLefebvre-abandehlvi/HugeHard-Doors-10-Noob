@@ -431,10 +431,52 @@ export default function Page() {
     const startButton = document.getElementById("start-button");
     const startMenu = document.getElementById("start-menu");
 
+    const taskbarSearch = document.getElementById("taskbar-search") as HTMLInputElement | null;
+
+    function filterStartMenuApps(query: string) {
+      if (!startMenu) return;
+      const normalized = query.trim().toLowerCase();
+      startMenu.querySelectorAll<HTMLElement>("[data-app]").forEach(item => {
+        const matches = !normalized || (item.textContent || "").toLowerCase().includes(normalized);
+        item.style.display = matches ? "" : "none";
+      });
+    }
+
+    if (taskbarSearch && startMenu && startButton) {
+      taskbarSearch.addEventListener("focus", () => {
+        startMenu.hidden = false;
+        startButton.classList.add("active");
+      });
+      taskbarSearch.addEventListener("input", () => {
+        startMenu.hidden = false;
+        startButton.classList.add("active");
+        filterStartMenuApps(taskbarSearch.value);
+      });
+      taskbarSearch.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+          taskbarSearch.value = "";
+          filterStartMenuApps("");
+          taskbarSearch.blur();
+          startMenu.hidden = true;
+          startButton.classList.remove("active");
+        }
+        if (event.key === "Enter") {
+          const firstMatch = startMenu.querySelector<HTMLElement>("[data-app]:not([style*='display: none'])");
+          firstMatch?.click();
+          taskbarSearch.value = "";
+          filterStartMenuApps("");
+        }
+      });
+    }
+
     if (startButton && startMenu) {
       startButton.addEventListener("click", () => {
         startMenu.hidden = !startMenu.hidden;
         startButton.classList.toggle("active", !startMenu.hidden);
+        if (startMenu.hidden && taskbarSearch) {
+          taskbarSearch.value = "";
+          filterStartMenuApps("");
+        }
       });
 
       startMenu.addEventListener("click", event => {
@@ -452,6 +494,10 @@ export default function Page() {
           }
           startMenu.hidden = true;
           startButton.classList.remove("active");
+          if (taskbarSearch) {
+            taskbarSearch.value = "";
+            filterStartMenuApps("");
+          }
         }
       });
 
@@ -4655,10 +4701,15 @@ export default function Page() {
 
         {/* TASKBAR */}
         <footer id="taskbar">
-          <button id="start-button">
+          <button id="start-button" aria-label="Open Start menu" title="Start">
             <img src="/hugeharddoors.png" alt="" />
             START
           </button>
+
+          <div id="taskbar-search-wrap">
+            <span aria-hidden="true">⌕</span>
+            <input id="taskbar-search" type="search" placeholder="Search apps and doors" aria-label="Search apps and doors" />
+          </div>
 
           <div id="taskbar-windows"></div>
 
@@ -4672,7 +4723,13 @@ export default function Page() {
       {/* START MENU WITH SCROLLING MECHANIC FOR SMALLER DEVICES */}
       <div id="start-menu" hidden style={{ maxHeight: '80vh', overflowY: 'auto', overflowX: 'hidden' }}>
         <div className="start-menu-header">
-          HUGEHARD DOORS 0.11
+          <div className="start-menu-user">
+            <div className="start-menu-avatar">H</div>
+            <div>
+              <strong>HUGEHARD DOORS</strong>
+              <span>DOORS 10 • PERSONAL DESKTOP</span>
+            </div>
+          </div>
         </div>
         <button data-app="contact-me"><img src="/assets/aistudio/profile_dae27b52.png" style={{ width: '16px', height: '16px', objectFit: 'cover', borderRadius: '2px', display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} alt="" />Contact Me</button>
         <button data-app="my-computer"><img src="/assets/aistudio/office_c18c2731.png" style={{ width: '16px', height: '16px', objectFit: 'contain', display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} alt="" />My Doors</button>
