@@ -502,7 +502,9 @@ export default function Page() {
       });
 
       document.addEventListener("click", event => {
-        if (!startMenu.hidden && !startMenu.contains(event.target as Node) && !startButton.contains(event.target as Node)) {
+        const target = event.target as Node;
+        const clickedSearch = !!taskbarSearch && taskbarSearch.contains(target);
+        if (!startMenu.hidden && !startMenu.contains(target) && !startButton.contains(target) && !clickedSearch) {
           startMenu.hidden = true;
           startButton.classList.remove("active");
         }
